@@ -20,6 +20,12 @@ function instagramAPI(user) {
   });
 };
 
+
+//=========HOME PAGE========
+app.get('/', function(req, res){
+  res.sendFile('index.html');
+});
+
 app.listen('7000', function(){
   console.log('Clarifai Running');
 });
