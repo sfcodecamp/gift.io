@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container p {
+  font-size: 2em;
+  height: 100px;
+  line-height: 40px;
+  margin: 15px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"] {
+  border-bottom: 1px solid #333;
+  font-size: 1.3em;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 300px;
+}
+
+button {
+  font-size: 1.3em;
+  height: 30px;
+}
