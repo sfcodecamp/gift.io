@@ -1,0 +1,25 @@
+{
+  "name": "gift.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vientang/gift.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vientang/gift.io/issues"
+  },
+  "homepage": "https://github.com/vientang/gift.io#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "clarifai": "^2.1.3-dev",
+    "express": "^4.14.1"
+  }
+}
