@@ -1,17 +1,15 @@
 const axios = require('axios');
 const Clarifai = require('clarifai');
 const helpers = require('./helpers');
-
+const state = require('./state');
 if (process.env.NODE_ENV !== 'production') {
   var Keys = require('./keys/keys');
 }
-
 const Shop = require('node-shop.com').initShop({apikey: process.env.SHOP_KEY || Keys.shopAPI});
 
 const clarifai = new Clarifai.App(
 	process.env.CLARIFAI_ID || Keys.clarifai_id,
 	process.env.CLARIFAI_SECRET || Keys.clarifai_secret
-);
 
 const controllers = {
 	state: {
