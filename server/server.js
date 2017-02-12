@@ -7,6 +7,10 @@ var express    = require('express'),
     app        = express();
 
 var clarifai = new Clarifai.App(Keys.id, Keys.secret);
+var Shop = require('node-shop.com').initShop({
+    apikey: Keys.shopAPI
+});
+
 
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
@@ -133,6 +137,18 @@ app.get('/userGift', function(req, res){
   instagramAPI('kingjames').then(function(images){
     promiseWrapper(getTen(images), res);
   });
+});
+
+
+//============Trying Out Shop's API
+app.get('/shop', function(req, res){
+  Shop.search("basketball people wear competition adult portrait business athlete classic foot", {page: 1, count:1})
+    .then(function (data) {
+      res.send(data);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
 });
 
 app.listen('7000', function(){
