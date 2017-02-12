@@ -77,11 +77,9 @@ function prediction(images, index, limit, client) {
 
   // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
-
     completed++;
 
     if (completed === limit) {
-
       var results = {};
 
       // map over result and accumulate total occurrences
@@ -93,10 +91,8 @@ function prediction(images, index, limit, client) {
           if (exclude(concept.name, exclusion)) {
             results[concept.name] = 1;
           }
-
         }
       });
-
       // sort by frequency
       var toSort = [];
 
@@ -111,6 +107,8 @@ function prediction(images, index, limit, client) {
       var sorted = toSort.sort((a,b) => b.frequency - a.frequency);
 
       // send response to client
+      console.log(sorted);
+      
       client.send(sorted.slice(0, keywords));
     }
   }).catch(err => {
@@ -129,6 +127,16 @@ function promiseWrapper(blocksOfTen, client) {
 
 };
 
+function shopResults(userKeywords,response){
+  Shop.search(userKeywords, {page: 1, count:10})
+    .then(function (data) {
+      response.send(data.searchItems);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+}
+
 // routes
 app.get('/', function(req, res){
   // home route
@@ -136,23 +144,18 @@ app.get('/', function(req, res){
 });
 
 app.post('/api/gift', function(req, res){
-  console.log(req.body.user);
-  // instagramAPI('kingjames')
-  //   .then(function(images){
-  //      prediction(images.slice(0, 9));
-  //   })
-  res.render('suggestions.ejs');
+  var userName = req.body.user;
+  console.log(userName);
+  instagramAPI(userName)
+    .then(function(images){
+       prediction(images.slice(0,9));
+    })
+  res.render('suggestions.ejs',{ user : req.body.user});
 });
 
 //============Trying Out Shop's API
 app.get('/shop', function(req, res){
-  Shop.search("bicycle", {page: 1, count:5})
-    .then(function (data) {
-      res.send(data.searchItems);
-    })
-    .catch(function (err) {
-      console.error(err);
-    });
+
 });
 
 app.listen('7000', function(){
