@@ -21,6 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .flex-container h1 {
@@ -28,7 +29,6 @@ body {
   height: 100px;
   line-height: 40px;
   margin: 15px;
-  margin-top: 70px;
   text-align: center;
 }
 
@@ -73,12 +73,13 @@ li {
   padding-top: 5px;
 }
 
-#suggestions {
+.suggestions {
+  display: flex;
   font-size: 1.3em;
-  margin: 20px;
+  margin: 50px;
 }
 
-#suggestions h1 {
+.suggestions h1 {
   font-size: 1.2em;
 }
 
