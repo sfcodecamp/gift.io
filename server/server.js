@@ -18,21 +18,30 @@ var  clarifai = new Clarifai.App(
 
 var userImagesData = [];
 
+function getTen(imagesArr) {
+  var images = {};
+  var id = 1;
+  while (imagesArr.length > 0) {
+    images[id] = imagesArr.splice(0, 10);
+    id++;
+  }
+  return images;
+}
+
 function instagramAPI(user) {
   return new Promise(function(resolve, reject){
     return axios.get('https://www.instagram.com/'+ user + '/media/').then(res => {
       var images = [];
-
       for (var post of res.data.items) {
         images.push({
           url: post.images.standard_resolution.url
         });
-    }
-    resolve(images);
+      }
+      console.log(images);
+      resolve(images);
+    });
   });
-});
 }
-
 
 
 const threshold = 0.9;
@@ -42,6 +51,11 @@ function prediction(images, res) {
 	var concepts = [];
 
   // create individual promises which call Clarifai predict API
+
+function prediction(images) {
+  var allImages = getTen(images);
+	var concepts = [];
+
 	function predict(url) {
 	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(response) {
@@ -55,6 +69,7 @@ function prediction(images, res) {
 	    }
 	  );
 	}
+
 
   // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
@@ -93,14 +108,21 @@ function prediction(images, res) {
 //=========HOME PAGE========
 app.get('/', function(req, res){
   // home route
+  
 });
 
 app.get('/userGift', function(req, res){
   instagramAPI('kingjames').then(function(images){
     prediction(images.slice(0, 10), res);
   });
-});
 
+  instagramAPI('kingjames')
+    .then(function(images){
+       prediction(images.slice(0, 9));
+    });  
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+
+});
 
 app.listen('7000', function(){
   console.log('Clarifai App is running on port 7000');
