@@ -10,6 +10,7 @@ const Shop = require('node-shop.com').initShop({apikey: process.env.SHOP_KEY || 
 const clarifai = new Clarifai.App(
 	process.env.CLARIFAI_ID || Keys.clarifai_id,
 	process.env.CLARIFAI_SECRET || Keys.clarifai_secret
+)
 
 const controllers = {
 	state: {
