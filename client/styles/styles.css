@@ -73,12 +73,13 @@ li {
   padding-top: 5px;
 }
 
-#suggestions {
+.suggestions {
+  display: flex;
   font-size: 1.3em;
-  margin: 20px;
+  margin: 50px;
 }
 
-#suggestions h1 {
+.suggestions h1 {
   font-size: 1.2em;
 }
 
