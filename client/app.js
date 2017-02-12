@@ -1,6 +1,7 @@
 
 function handleSubmit() {
 
+<<<<<<< 135f057b1b0c28b943380720732aca915f3e10b3
 	$('#input').blur();
 	$('.stackable').html('');
 	$('.flex-container').append(`
@@ -12,6 +13,8 @@ function handleSubmit() {
 		</div>
 		`);
 
+=======
+>>>>>>> Dynamic templating based on given data in the client
 			window.sr = ScrollReveal();
 
 	    sr.reveal('.card', {
@@ -31,7 +34,19 @@ function handleSubmit() {
 			 var linkUrl  	 = item.linkUrl;
 
 			 console.log(name + ': ' + description);
+<<<<<<< 135f057b1b0c28b943380720732aca915f3e10b3
 
+=======
+			//  <a class="ui card" href="http://www.shop.com/Grizzly+Fitness+Black+Grizzly+Paw+Training+Gloves+XXL-1507263259-p+.xhtml">
+			// 	 <div class="image">
+			// 		 <img src="http://img.shop.com/Image/OPContainer-Images/713/1047215713__175x175__.jpg" alt="Grizzly Fitness Black Grizzly Paw Training Gloves - XXL">
+			// 	 </div>
+			// 	 <div class="content">
+			// 		 <div class="header">Grizzly Fitness Black Grizzly Paw Training Gloves - XXL</div>
+			// 		 <div class="description">Premium Weightlifting Gloves in size xxlarge from Grizzly has a soft, durable cowhide leather with stretch back.  The palms and fingers are padded for added comfort.  Reinforced stitched stress areas for durability.  Velcro closure and Unisex design. ...</div>
+			// 	 </div>
+			//  </a>
+>>>>>>> Dynamic templating based on given data in the client
 
 			 $('.stackable').append(`
 				  <a class="ui card" href=${name}linkUrl>
