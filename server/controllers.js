@@ -1,7 +1,7 @@
 const axios = require('axios');
 const Clarifai = require('clarifai');
 const helpers = require('./helpers');
-const state = require('./state');
+
 if (process.env.NODE_ENV !== 'production') {
   var Keys = require('./keys/keys');
 }

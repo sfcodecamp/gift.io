@@ -175,7 +175,9 @@ li {
   width: 250px;
 }
 
-
+.image {
+  margin: 10px auto;
+}
 
 
 @media screen and (max-width: 450px) {
