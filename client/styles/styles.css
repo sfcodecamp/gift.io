@@ -64,6 +64,10 @@ button {
   border: 2px solid;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 ul {
   padding: 0;
 }
@@ -73,7 +77,6 @@ li {
 }
 
 #suggestions {
-  flex-grow: 1;
   font-size: 1.3em;
   margin: 20px;
 }
@@ -81,6 +84,10 @@ li {
 #suggestions h2 {
   font-size: 1.3em;
 }
+
+
+
+
 
 @media screen and (max-width: 340px) {
   .flex-container h1 {
