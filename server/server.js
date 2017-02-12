@@ -136,12 +136,10 @@ app.get('/', function(req, res){
 });
 
 app.post('/api/gift', function(req, res){
-  console.log(req.body.user);
-  // instagramAPI('kingjames')
-  //   .then(function(images){
-  //      prediction(images.slice(0, 9));
-  //   })
-  res.sendFile(path.join(__dirname, '../client', 'suggestions.html'));
+  var { user } = req.body;
+  instagramAPI(user).then((images) => {
+    promiseWrapper(getTen(images), res);
+  });
 });
 
 //============Trying Out Shop's API

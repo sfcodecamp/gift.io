@@ -11,7 +11,7 @@
   <div class="container">
     <div class="flex-container">
       <h1>Enter an Instagram user to get gift suggestions:</h1>
-      <form method="post" action="/api/gift">
+      <form onsubmit="return handleSubmit()">
         <div>
           <label>@</label><input type="text" name="user">
         </div>
@@ -32,7 +32,8 @@
       </div>
     </div>
   </div>
-
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
