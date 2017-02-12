@@ -13,7 +13,7 @@ body {
 
 .container {
   width: 90%;
-  background-color: #FAFAFA;
+  background-color: rgba(250,250,250,0.5);
   margin: 0 auto;
   overflow: auto;
 }
@@ -46,7 +46,7 @@ label {
 }
 
 input[type="text"] {
-  background: none;
+  background: white;
   border-style: none none solid none;
   border-color: #9DB2B7;
   font-size: 1.3em;
@@ -91,6 +91,17 @@ li {
   color: inherit;
 }
 
+.titleHeader {
+  font-size: 15px !important;
+}
+
+.descriptionBox {
+  margin-top: 10px;
+}
+
+.description {
+  font-size: 12px;
+}
 
 @media screen and (max-width: 450px) {
   .container {
