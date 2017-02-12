@@ -12,7 +12,7 @@ body {
 
 .container {
   width: 80%;
-  background-color: #fff;
+  background-color: #FAFAFA;
   margin: 0 auto;
 }
 
@@ -52,9 +52,9 @@ input[type="text"] {
 
 input[type="text"]:focus {
   outline: none;
-  border: 2px solid #fff;
-  -webkit-box-shadow: 0px 0px 4px 0px #fff;
-  box-shadow: 0px 0px 4px 0px #fff;
+  border: 2px solid #0CB2EC;
+  -webkit-box-shadow: 0px 0px 4px 0px #0CB2EC;
+  box-shadow: 0px 0px 4px 0px #0CB2EC;
 }
 
 button {
