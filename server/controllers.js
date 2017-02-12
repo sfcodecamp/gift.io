@@ -37,7 +37,7 @@ const controllers = {
 	callShopAPI: function(userKeywords, response) {
 		this.state.completed = 0;
 		this.state.concepts = [];
-	  Shop.search(userKeywords, {page: 1, count: 25})
+	  Shop.search(userKeywords, {page: 1, count: 15})
 	    .then(data => {
 	    	console.log("Sending shop results to client");
 	      response.send(data.searchItems);
