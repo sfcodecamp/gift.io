@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+  color: #0F3642;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(155deg, #F8F09C, #0CB2EC);
+}
+
+.container {
+  width: 80%;
+  background-color: #FAFAFA;
+  margin: 0 auto;
+}
+
+.flex-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-container h1 {
+  font-size: 1.8em;
+  height: 100px;
+  line-height: 40px;
+  margin: 15px;
+  margin-top: 70px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+}
+
+label {
+  display: inline-block;
+  font-size: 1.3em;
+}
+
+input[type="text"] {
+  background: none;
+  border-style: none none solid none;
+  border-color: #9DB2B7;
+  font-size: 1.3em;
+  margin-right: 20px;
+  padding: 3px;
+  width: 200px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border: 2px solid #0CB2EC;
+  -webkit-box-shadow: 0px 0px 4px 0px #0CB2EC;
+  box-shadow: 0px 0px 4px 0px #0CB2EC;
+}
+
+button {
+  font-size: 1.3em;
+  height: 40px;
+  background: none;
+  border: 2px solid;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+li {
+  padding-top: 5px;
+}
+
+#suggestions {
+  font-size: 1.3em;
+  margin: 20px;
+}
+
+#suggestions h2 {
+  font-size: 1.2em;
+}
+
+
+
+
+
+@media screen and (max-width: 450px) {
+  .flex-container h1 {
+    font-size: 1.5em;
+    line-height: 30px;
+  }
+
+  label, input[type="text"], button {
+    font-size: 1.2em;
+  }
+
+  input[type="text"] {
+    width: 240px;
+    margin: 0 auto 20px auto;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  #suggestions {
+    padding: 0;
+  }
+
+  #suggestions h2 {
+    font-size: 1.1em;
+  }
+}
