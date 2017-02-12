@@ -11,14 +11,16 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   background-color: #FAFAFA;
   margin: 0 auto;
+  overflow: auto;
 }
 
 .flex-container {
   height: 100vh;
   display: flex;
+  padding-top: 50px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -28,12 +30,13 @@ body {
   font-size: 1.8em;
   height: 100px;
   line-height: 40px;
-  margin: 15px;
   text-align: center;
 }
 
 form {
   display: flex;
+  align-items: baseline;
+  padding: 60px;
 }
 
 label {
@@ -60,7 +63,7 @@ input[type="text"]:focus {
 
 button {
   font-size: 1.3em;
-  height: 40px;
+  min-height: 40px;
   background: none;
   border: 2px solid;
 }
@@ -83,11 +86,16 @@ li {
   font-size: 1.2em;
 }
 
-
-
+.ui.card>.content>.header, .ui.cards>.card>.content>.header {
+  color: inherit;
+}
 
 
 @media screen and (max-width: 450px) {
+  .container {
+    width: 97%;
+  }
+
   .flex-container h1 {
     font-size: 1.5em;
     line-height: 30px;
@@ -104,6 +112,10 @@ li {
 
   form {
     flex-direction: column;
+  }
+
+  button {
+    width: 100%;
   }
 
   #suggestions {
