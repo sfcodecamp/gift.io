@@ -3,6 +3,7 @@ var express    = require('express'),
     axios      = require('axios'),
     Clarifai   = require('clarifai'),
     Keys       = require('./keys/keys.js'),
+    path       = require('path'),
     app        = express();
 
 
@@ -34,15 +35,20 @@ function instagramAPI(user) {
 
 
 
+const threshold = 0.9;
 
-function prediction(images) {
+function prediction(images, res) {
 
 	var concepts = [];
 
+  // create individual promises which call Clarifai predict API
 	function predict(url) {
-	  clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
+	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(response) {
-	      concepts.push(response);
+	      var results = response.outputs[0].data.concepts;
+        results.forEach(result => {
+          if (result.value > threshold) concepts.push(result)
+        });
 	    },
 	    function(err) {
 	      console.log(err);
@@ -50,28 +56,52 @@ function prediction(images) {
 	  );
 	}
 
+  // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
-		console.log(concepts[0]);
-    console.log('done', concepts.length);
-	}).catch(err => console.log(err));
+
+    var results = {};
+
+    // map over result and accumulate total occurrences
+    concepts.forEach(concept => {
+      if (results[concept.name]) {
+        results[concept.name] = results[concept.name] + 1;
+      } else {
+        results[concept.name] = 1;
+      }
+    });
+
+    // sort by frequency
+    var toSort = [];
+
+    for (var key in results) {
+      toSort.push({
+        name: key,
+        frequency: results[key]
+      });
+    }
+
+    // send response to client
+    res.send(toSort.sort((a,b) => b.frequency - a.frequency));
+
+  }).catch(err => {
+    console.log(err);
+  });
 
 }
 
 
 //=========HOME PAGE========
 app.get('/', function(req, res){
-  res.sendFile('index.html');
+  // home route
 });
 
 app.get('/userGift', function(req, res){
-  //var userName = req.body.userName;
-  instagramAPI('kingjames')
-      .then(function(images){
-         prediction(images.slice(0, 9));
-      });
+  instagramAPI('kingjames').then(function(images){
+    prediction(images.slice(0, 10), res);
+  });
 });
 
 
 app.listen('7000', function(){
-  console.log('Clarifai Running');
+  console.log('Clarifai App is running on port 7000');
 });
