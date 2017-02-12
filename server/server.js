@@ -43,19 +43,11 @@ function instagramAPI(user) {
   });
 }
 
-
 const threshold = 0.9;
-
-function prediction(images, res) {
-
-	var concepts = [];
-
-  // create individual promises which call Clarifai predict API
 
 function prediction(images) {
   var allImages = getTen(images);
 	var concepts = [];
-
 	function predict(url) {
 	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(response) {
@@ -69,7 +61,6 @@ function prediction(images) {
 	    }
 	  );
 	}
-
 
   // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
@@ -112,15 +103,13 @@ app.get('/', function(req, res){
 });
 
 app.get('/userGift', function(req, res){
-  instagramAPI('kingjames').then(function(images){
-    prediction(images.slice(0, 10), res);
-  });
-
+  
   instagramAPI('kingjames')
     .then(function(images){
        prediction(images.slice(0, 9));
     });  
   res.sendFile(path.join(__dirname, '../client', 'index.html'));
+
 
 });
 
