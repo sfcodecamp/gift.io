@@ -2,13 +2,20 @@ var express    = require('express'),
     bodyParser = require('body-parser'),
     axios      = require('axios'),
     Clarifai   = require('clarifai'),
-    Keys       = require('./keys/keys.js'),
     path       = require('path'),
     app        = express();
 
-var clarifai = new Clarifai.App(Keys.id, Keys.secret);
+// if (process.env.NODE_ENV) {
+//   var Keys = require('./keys/keys.js');
+// }
+
+var clarifai = new Clarifai.App(
+  process.env.CLARIFAI_ID || Keys.id,
+  process.env.CLARIFAI_SECRET || Keys.secret
+);
+
 var Shop = require('node-shop.com').initShop({
-    apikey: Keys.shopAPI
+    apikey: process.env.SHOP_KEY || Keys.shopAPI
 });
 
 app.use(bodyParser.urlencoded({extended: true}) )
@@ -113,6 +120,9 @@ function prediction(images, index, limit, client) {
         keywords += sorted[i].name;
         if (i < productMax - 1) keywords += ' ';
       };
+
+      completed = 0;
+      concepts = [];
 
       shopResults(keywords, client);
 
