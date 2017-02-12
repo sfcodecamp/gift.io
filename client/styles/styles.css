@@ -7,7 +7,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: linear-gradient(130deg, #F8F09C, #0CB2EC);
+  background: linear-gradient(155deg, #F8F09C, #0CB2EC);
+}
+
+.container {
+  width: 80%;
+  background-color: #fff;
+  margin: 0 auto;
 }
 
 .flex-container {
@@ -22,13 +28,12 @@ body {
   height: 100px;
   line-height: 40px;
   margin: 15px;
-  margin-top: 150px;
+  margin-top: 120px;
   text-align: center;
 }
 
 form {
   display: flex;
-  flex-shrink: 0;
 }
 
 label {
