@@ -2,7 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const Keys = require('./keys/keys');
 const controllers = require('./controllers');
 const helpers = require('./helpers');
 const app = express();
@@ -20,7 +19,7 @@ app.get('/', (req, res) => {
 
 app.post('/api/gift', (req, res) => {
   const { user } = req.body;
-  console.log(user);
+  console.log('Request received for ' + user);
   controllers.instagramAPI(user)
     .then(images => {
       controllers.promiseWrapper(helpers.getTen(images), res);

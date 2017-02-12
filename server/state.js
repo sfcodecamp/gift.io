@@ -1,4 +1,5 @@
 const state = {
+	concepts: [],
 	completed: 0,
 	productMax: 3,
 	threshold: 0.9,
