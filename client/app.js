@@ -5,7 +5,7 @@ function handleSubmit() {
 
 		// if this happens, response is the data from the shop api:
 		// -> render production suggestions to UI
-		console.log(response);
+		console.log("Response", response);
 
 	}).catch(err => {
 
