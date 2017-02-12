@@ -10,9 +10,6 @@ app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client')));
 
-const port = process.env.PORT || '7000';
-
-// routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/', 'index.html'));
 });
@@ -28,6 +25,6 @@ app.post('/api/gift', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-  console.log('Clarifai App is running on port 7000');
-});
+const port = process.env.PORT || '7000';
+
+app.listen(port, () => console.log('Clarifai App is running on port 7000'));

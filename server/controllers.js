@@ -1,7 +1,6 @@
 const axios = require('axios');
 const Clarifai = require('clarifai');
 const helpers = require('./helpers');
-const state = require('./state');
 
 if (process.env.NODE_ENV !== 'production') {
   var Keys = require('./keys/keys');
@@ -14,7 +13,14 @@ const clarifai = new Clarifai.App(
 	process.env.CLARIFAI_SECRET || Keys.clarifai_secret
 );
 
-const controllers = {	
+const controllers = {
+	state: {
+		completed: 0,
+		concepts: [],
+		productMax: 3,
+		threshold: 0.9,
+		interval: 2000
+	},
 	instagramAPI: function(user) {
 	  return new Promise((resolve, reject) => {
 	    return axios.get(`https://www.instagram.com/${user}/media/`)
@@ -28,27 +34,36 @@ const controllers = {
 		    .catch(err => reject("Error in instagramAPI():", err));
 	  });
 	},
+	callShopAPI: function(userKeywords, response) {
+		this.state.completed = 0;
+		this.state.concepts = [];
+	  Shop.search(userKeywords, {page: 1, count: 10})
+	    .then(data => {
+	    	console.log("Sending shop results to client");
+	      response.send(data.searchItems);
+	    })
+	    .catch(err => console.error("Error in callShopAPI():", err));
+	},
 	getResults: function(limit, client) {
-		state.completed++;
-    if (state.completed === limit) {
-    	let countedConcepts = helpers.countConcepts(state.concepts);
+		this.state.completed++;
+    if (this.state.completed === limit) {
+    	let countedConcepts = helpers.countConcepts(this.state.concepts);
       let sortedFrequency = this.getNamesAndFreqs(countedConcepts);
       let keywords = this.getKeywords(sortedFrequency);
-      this.shopResults(keywords, client);
+      this.callShopAPI(keywords, client);
     }
   },
 	getKeywords: function(sortedNames) {
-		// get keywords
+		// get keywords from sorted list
     let keywords = '';
-    for (let i = 0; i < state.productMax; i++) { 
+    for (let i = 0; i < this.state.productMax; i++) { 
     	let product = sortedNames[i];
       keywords += product.name;
-      i < state.productMax - 1 ? keywords += ' ' : null;
+      i < this.state.productMax - 1 ? keywords += ' ' : null;
     };
     return keywords;
 	},
   getNamesAndFreqs: function(clarifaiResults) {
-  	// get names and frequency
     let toSort = [];
     for (let key in clarifaiResults) {
       toSort.push({
@@ -56,17 +71,15 @@ const controllers = {
         frequency: clarifaiResults[key]
       });
     }
-    // sort by frequency
-		let sorted = toSort.sort((a,b) => b.frequency - a.frequency);
-		return sorted;
+		return toSort.sort((a,b) => b.frequency - a.frequency);
   },
 	clarifaiPredict: function(url) {
-		let threshold = state.threshold;
+		let threshold = this.state.threshold;
 	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url)
 	  	.then(res => {
 	      let results = res.outputs[0].data.concepts;
         results.forEach(result => {
-          if (result.value > threshold) state.concepts.push(result);
+          if (result.value > threshold) this.state.concepts.push(result);
         });
 	    }, (err) => console.log("Error in clarifaiPredict():", err.data.status.details))
 	},
@@ -80,19 +93,9 @@ const controllers = {
 	  blocksOfTen.forEach((block, index) => {
 	    setTimeout(() => {
 	      this.prediction(block, blocksOfTen.length, client);
-	    }, index * state.interval);
+	    }, index * this.state.interval);
 	  });
 	},
-	shopResults: function(userKeywords, response) {
-		state.completed = 0;
-		state.concepts = [];
-	  Shop.search(userKeywords, {page: 1, count: 10})
-	    .then(data => {
-	    	console.log("Sending shop results to client");
-	      response.send(data.searchItems);
-	    })
-	    .catch(err => console.error("Error in shopResults():", err));
-	}
 }
 
 module.exports = controllers;
