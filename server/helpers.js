@@ -1,5 +1,5 @@
 
-const state = require('./state');
+var excluded = ['people', 'no person', 'man', 'woman'];
 
 const helpers = {
 	exclude: function(current, values) {
@@ -21,7 +21,7 @@ const helpers = {
       if (results[concept.name]) {
         results[concept.name] = results[concept.name] + 1;
       } else {
-        if (helpers.exclude(concept.name, state.exclusion)) {
+        if (helpers.exclude(concept.name, excluded)) {
           results[concept.name] = 1;
         }
       }
