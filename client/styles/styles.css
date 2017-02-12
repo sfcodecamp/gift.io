@@ -79,14 +79,14 @@ li {
 }
 
 #suggestions h2 {
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 
 
 
 
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   .flex-container h1 {
     font-size: 1.5em;
     line-height: 30px;
@@ -106,7 +106,10 @@ li {
   }
 
   #suggestions {
-    font-size: 1.2em;
     padding: 0;
+  }
+
+  #suggestions h2 {
+    font-size: 1.1em;
   }
 }
