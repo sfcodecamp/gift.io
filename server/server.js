@@ -2,9 +2,12 @@ var express    = require('express'),
     bodyParser = require('body-parser'),
     axios      = require('axios'),
     Clarifai   = require('clarifai'),
-    Keys       = require('./keys/keys.js'),
     path       = require('path'),
     app        = express();
+
+if (process.env.NODE_ENV) {
+  var Keys = require('./keys/keys.js');
+}
 
 var clarifai = new Clarifai.App(
   process.env.CLARIFAI_ID || Keys.id,
