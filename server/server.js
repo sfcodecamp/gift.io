@@ -11,10 +11,10 @@ var Shop = require('node-shop.com').initShop({
     apikey: Keys.shopAPI
 });
 
-
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../views')));
 
 // call instgram to retrieve submitted user's images
 function instagramAPI(user) {
@@ -132,7 +132,7 @@ function promiseWrapper(blocksOfTen, client) {
 // routes
 app.get('/', function(req, res){
   // home route
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+  res.render('index.ejs');
 });
 
 app.post('/api/gift', function(req, res){
@@ -141,7 +141,7 @@ app.post('/api/gift', function(req, res){
   //   .then(function(images){
   //      prediction(images.slice(0, 9));
   //   })
-  res.sendFile(path.join(__dirname, '../client', 'suggestions.html'));
+  res.render('suggestions.ejs');
 });
 
 //============Trying Out Shop's API
