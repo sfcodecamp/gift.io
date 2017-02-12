@@ -11,10 +11,10 @@ var Shop = require('node-shop.com').initShop({
     apikey: Keys.shopAPI
 });
 
-
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../views')));
 
 // call instgram to retrieve submitted user's images
 function instagramAPI(user) {
@@ -77,11 +77,9 @@ function prediction(images, index, limit, client) {
 
   // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
-
     completed++;
 
     if (completed === limit) {
-
       var results = {};
 
       // map over result and accumulate total occurrences
@@ -93,10 +91,8 @@ function prediction(images, index, limit, client) {
           if (exclude(concept.name, exclusion)) {
             results[concept.name] = 1;
           }
-
         }
       });
-
       // sort by frequency
       var toSort = [];
 
@@ -111,6 +107,8 @@ function prediction(images, index, limit, client) {
       var sorted = toSort.sort((a,b) => b.frequency - a.frequency);
 
       // send response to client
+      console.log(sorted);
+
       client.send(sorted.slice(0, keywords));
     }
   }).catch(err => {
@@ -129,10 +127,20 @@ function promiseWrapper(blocksOfTen, client) {
 
 };
 
+function shopResults(userKeywords,response){
+  Shop.search(userKeywords, {page: 1, count:10})
+    .then(function (data) {
+      response.send(data.searchItems);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+}
+
 // routes
 app.get('/', function(req, res){
   // home route
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+  res.render('index.ejs');
 });
 
 app.post('/api/gift', function(req, res){
@@ -142,16 +150,7 @@ app.post('/api/gift', function(req, res){
   });
 });
 
-//============Trying Out Shop's API
-app.get('/shop', function(req, res){
-  Shop.search("basketball people wear competition adult portrait business athlete classic foot", {page: 1, count:1})
-    .then(function (data) {
-      res.send(data);
-    })
-    .catch(function (err) {
-      console.error(err);
-    });
-});
+
 
 app.listen('7000', function(){
   console.log('Clarifai App is running on port 7000');
