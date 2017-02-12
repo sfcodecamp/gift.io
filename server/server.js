@@ -11,10 +11,9 @@ var Shop = require('node-shop.com').initShop({
     apikey: Keys.shopAPI
 });
 
-app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../views')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 // call instgram to retrieve submitted user's images
 function instagramAPI(user) {
@@ -77,9 +76,11 @@ function prediction(images, index, limit, client) {
 
   // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
+    
     completed++;
 
     if (completed === limit) {
+
       var results = {};
 
       // map over result and accumulate total occurrences
@@ -106,9 +107,6 @@ function prediction(images, index, limit, client) {
       // sort by frequency
       var sorted = toSort.sort((a,b) => b.frequency - a.frequency);
 
-      // send response to client
-      client.send(sorted.slice(0, keywords));
-
       var keywords = '';
 
       for (var i = 0; i < productMax; i++) {
@@ -119,6 +117,7 @@ function prediction(images, index, limit, client) {
       shopResults(keywords, client);
 
     }
+
   }).catch(err => {
     console.log(err);
   });
@@ -135,34 +134,30 @@ function promiseWrapper(blocksOfTen, client) {
 
 };
 
-function shopResults(userKeywords,response){
-  Shop.search(userKeywords, {page: 1, count:10})
+function shopResults(userKeywords, response) {
+  Shop.search(userKeywords, {page: 1, count: 10})
     .then(function (data) {
       response.send(data.searchItems);
     })
     .catch(function (err) {
       console.error(err);
     });
-}
+};
 
 // routes
-app.get('/', function(req, res){
-  // home route
-  res.render('index.ejs');
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/', 'index.html'));
 });
 
-app.post('/api/gift', function(req, res){
+app.post('/api/gift', function(req, res) {
   var { user } = req.body;
   instagramAPI(user).then(images => {
     promiseWrapper(getTen(images), res);
   }).catch(err => {
-    console.log('error!!!')
-    res.status(404).send('error!');
+    res.status(404).send('Instagram username was not found!');
   });
 });
 
-
-
-app.listen('7000', function(){
+app.listen('7000', function() {
   console.log('Clarifai App is running on port 7000');
 });
