@@ -10,6 +10,7 @@ var express    = require('express'),
 //==========CONFIG============
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../client')));
 
 var  clarifai = new Clarifai.App(
     Keys.id,
@@ -99,16 +100,16 @@ function prediction(images) {
 //=========HOME PAGE========
 app.get('/', function(req, res){
   // home route
-  
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
-app.get('/userGift', function(req, res){
-  
-  instagramAPI('kingjames')
-    .then(function(images){
-       prediction(images.slice(0, 9));
-    });  
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+app.post('/api/gift', function(req, res){
+  console.log(req.body.user);
+  // instagramAPI('kingjames')
+  //   .then(function(images){
+  //      prediction(images.slice(0, 9));
+  //   })
+  res.sendFile(path.join(__dirname, '../client', 'suggestions.html'));
 
 
 });
