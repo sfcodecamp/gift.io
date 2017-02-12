@@ -3,6 +3,7 @@ var express    = require('express'),
     axios      = require('axios'),
     Clarifai   = require('clarifai'),
     Keys       = require('./keys/keys.js'),
+    path       = require('path'),
     app        = express();
 
 
@@ -17,28 +18,34 @@ var  clarifai = new Clarifai.App(
 
 var userImagesData = [];
 
+function getTen(imagesArr) {
+  var images = {};
+  var id = 1;
+  while (imagesArr.length > 0) {
+    images[id] = imagesArr.splice(0, 10);
+    id++;
+  }
+  return images;
+}
+
 function instagramAPI(user) {
   return new Promise(function(resolve, reject){
     return axios.get('https://www.instagram.com/'+ user + '/media/').then(res => {
       var images = [];
-
       for (var post of res.data.items) {
         images.push({
           url: post.images.standard_resolution.url
         });
-    }
-    resolve(images);
+      }
+      console.log(images);
+      resolve(images);
+    });
   });
-});
 }
 
-
-
-
 function prediction(images) {
-
+  var allImages = getTen(images);
 	var concepts = [];
-
 	function predict(url) {
 	  clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(response) {
@@ -49,10 +56,10 @@ function prediction(images) {
 	    }
 	  );
 	}
-
+  
 	Promise.all(images.map(img => predict(img.url))).then(values => {
-		console.log(concepts[0]);
-    console.log('done', concepts.length);
+		// console.log(concepts[0]);
+  //   console.log('done', concepts.length);
 	}).catch(err => console.log(err));
 
 }
@@ -60,17 +67,12 @@ function prediction(images) {
 
 //=========HOME PAGE========
 app.get('/', function(req, res){
-  res.sendFile('index.html');
-});
-
-app.get('/userGift', function(req, res){
-  //var userName = req.body.userName;
   instagramAPI('kingjames')
-      .then(function(images){
-         prediction(images.slice(0, 9));
-      });
+    .then(function(images){
+       prediction(images.slice(0, 9));
+    });  
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
-
 
 app.listen('7000', function(){
   console.log('Clarifai Running');
