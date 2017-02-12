@@ -17,7 +17,7 @@ body {
   align-items: center;
 }
 
-.flex-container > p {
+.flex-container h1 {
   font-size: 1.8em;
   height: 100px;
   line-height: 40px;
@@ -71,11 +71,14 @@ li {
   flex-grow: 1;
   font-size: 1.3em;
   margin: 20px;
-  /*padding: 70px 200px;*/
+}
+
+#suggestions h2 {
+  font-size: 1.3em;
 }
 
 @media screen and (max-width: 340px) {
-  .flex-container p {
+  .flex-container h1 {
     font-size: 1.5em;
   }
 
