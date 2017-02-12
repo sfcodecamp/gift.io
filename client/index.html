@@ -5,24 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gift.io</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css">
-  <link rel="stylesheet" href="./styles/styles.css">
   <script src="https://unpkg.com/scrollreveal@3.3.2/dist/scrollreveal.min.js"></script>
+  <link rel="stylesheet" href="./styles/styles.css">
 </head>
 
 <body>
-  <div class="container">
-    <div class="flex-container">
-      <h1>Enter an Instagram user to get gift suggestions:</h1>
+    <div class="heading">
+      <h1 class="logo">Gift-ly</h1>
+    </div>
+    <div class="container">
+      <div class="flex-container">
+      
+      <h1 class="title">Enter an Instagram user to get gift suggestions:</h1>
+
       <form onsubmit="return handleSubmit()">
-        <div>
-          <label>@</label><input type="text" name="user" id="input" autofocus>
-        </div>
-        <button>Search</button>
+          <div class="form-input-container">
+            <label>@</label><input autofocus type="text" name="user" id="input">
+          </div>
+          <button class="search-text" type="submit">Search</button>
       </form>
 
       <div class="suggestions">
-        <div class="ui link four stackable cards">
-        </div>
+        <div class="ui link four stackable cards"></div>
       </div>
 
     </div>
@@ -34,8 +38,6 @@
   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
   <script src="app.js"></script>
-
-
 
 </body>
 </html>
