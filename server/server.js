@@ -5,9 +5,9 @@ var express    = require('express'),
     path       = require('path'),
     app        = express();
 
-if (process.env.NODE_ENV) {
-  var Keys = require('./keys/keys.js');
-}
+// if (process.env.NODE_ENV) {
+//   var Keys = require('./keys/keys.js');
+// }
 
 var clarifai = new Clarifai.App(
   process.env.CLARIFAI_ID || Keys.id,
