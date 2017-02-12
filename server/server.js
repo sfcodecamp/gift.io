@@ -27,7 +27,7 @@ function instagramAPI(user) {
         });
       }
       resolve(images);
-    });
+    }).catch(err => reject(err));
   });
 };
 
@@ -50,9 +50,9 @@ function exclude(current, values) {
 }
 
 // define values for keywords limit to return to client and value threshold for prediction matching
-const keywords = 15;
 const threshold = 0.9;
 const interval = 2000;
+const productMax = 3;
 
 // global state variables for prediction function
 var completed = 0;
@@ -107,9 +107,17 @@ function prediction(images, index, limit, client) {
       var sorted = toSort.sort((a,b) => b.frequency - a.frequency);
 
       // send response to client
-      console.log(sorted);
-
       client.send(sorted.slice(0, keywords));
+
+      var keywords = '';
+
+      for (var i = 0; i < productMax; i++) {
+        keywords += sorted[i].name;
+        if (i < productMax - 1) keywords += ' ';
+      };
+
+      shopResults(keywords, client);
+
     }
   }).catch(err => {
     console.log(err);
@@ -145,8 +153,11 @@ app.get('/', function(req, res){
 
 app.post('/api/gift', function(req, res){
   var { user } = req.body;
-  instagramAPI(user).then((images) => {
+  instagramAPI(user).then(images => {
     promiseWrapper(getTen(images), res);
+  }).catch(err => {
+    console.log('error!!!')
+    res.status(404).send('error!');
   });
 });
 
