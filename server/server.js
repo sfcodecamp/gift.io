@@ -142,9 +142,9 @@ app.get('/userGift', function(req, res){
 
 //============Trying Out Shop's API
 app.get('/shop', function(req, res){
-  Shop.search("basketball people wear competition adult portrait business athlete classic foot", {page: 1, count:1})
+  Shop.search("bicycle", {page: 1, count:5})
     .then(function (data) {
-      res.send(data);
+      res.send(data.searchItems);
     })
     .catch(function (err) {
       console.error(err);
