@@ -8,8 +8,7 @@ function handleSubmit() {
 		<div class="ui active dimmer" id="loader">
 				<div class="ui text loader">Loading</div>
 			<p></p>
-		</div>
-		`);
+		</div>`);
 
 	window.sr = ScrollReveal();
 
@@ -31,12 +30,14 @@ function handleSubmit() {
 			}
 		});
 
-		var display = data.map(function(item) {
+		var image, name, description, linkUrl;
 
-			 var image = item.imageURI;
-			 var name =  item.caption;
-			 var description = item.the_Description;
-			 var linkUrl  	 = item.modelQuickViewDetails.linkUrl;
+		data.map(function(item) {
+
+			 image 			 = item.imageURI;
+			 name 			 =  item.caption;
+			 description = item.the_Description;
+			 linkUrl  	 = item.modelQuickViewDetails.linkUrl;
 
 			 $('.stackable').append(`
 				  <a class="ui card" target="_blank" href=${linkUrl}>
@@ -47,8 +48,7 @@ function handleSubmit() {
 				 		 <div class="header">${name}</div>
 				 		 <div class="description">${description}</div>
 				 	 </div>
-				  </a>
-				 `);
+				  </a>`);
 
 		});
 
