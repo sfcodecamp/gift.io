@@ -8,6 +8,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: linear-gradient(155deg, #F8F09C, #0CB2EC);
+  background-size: contain;
 }
 
 .container {
