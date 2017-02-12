@@ -7,6 +7,10 @@ var express    = require('express'),
     app        = express();
 
 var clarifai = new Clarifai.App(Keys.id, Keys.secret);
+var Shop = require('node-shop.com').initShop({
+    apikey: Keys.shopAPI
+});
+
 
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
@@ -55,7 +59,7 @@ var concepts = [];
 
 // main prediction function
 function prediction(images, index, limit, client) {
-	
+
 	function predict(url) {
 	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(response) {
@@ -72,9 +76,9 @@ function prediction(images, index, limit, client) {
 
   // Process all images as promise array
 	Promise.all(images.map(img => predict(img.url))).then(values => {
-    
+
     completed++;
-    
+
     if (completed === limit) {
 
       var results = {};
@@ -84,7 +88,7 @@ function prediction(images, index, limit, client) {
         if (results[concept.name]) {
           results[concept.name] = results[concept.name] + 1;
         } else {
-            
+
           if (exclude(concept.name, exclusion)) {
             results[concept.name] = 1;
           }
@@ -115,7 +119,7 @@ function prediction(images, index, limit, client) {
 };
 
 function promiseWrapper(blocksOfTen, client) {
-  
+
   blocksOfTen.forEach((block, index) => {
     setTimeout(() => {
       prediction(block, index, blocksOfTen.length, client);
@@ -126,7 +130,7 @@ function promiseWrapper(blocksOfTen, client) {
 
 // routes
 app.get('/', function(req, res){
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));  
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
 app.get('/userGift', function(req, res){
@@ -135,7 +139,18 @@ app.get('/userGift', function(req, res){
   });
 });
 
+
+//============Trying Out Shop's API
+app.get('/shop', function(req, res){
+  Shop.search("basketball people wear competition adult portrait business athlete classic foot", {page: 1, count:1})
+    .then(function (data) {
+      res.send(data);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+});
+
 app.listen('7000', function(){
   console.log('Clarifai App is running on port 7000');
 });
-
