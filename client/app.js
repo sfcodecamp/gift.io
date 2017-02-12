@@ -11,34 +11,41 @@ function handleSubmit() {
 		</div>
 		`);
 
-			window.sr = ScrollReveal();
+	window.sr = ScrollReveal();
 
-	    sr.reveal('.card', {
-	      duration: 1000,
-	      viewFactor: 0.2,
-	    }, 300);
+  sr.reveal('.card', {
+    duration: 1000,
+    viewFactor: 0.2,
+  }, 300);
 
 	axios.post('/api/gift', { user: document.getElementById('input').value }).then(response => {
 
 		$('#loader').remove();
 
-		var data = response.data;
+		var unique = {};
 
-		var display = data.map(function(item){
+		var data = response.data.filter(item => {
+			if (!unique[item.catalogID]) {
+				unique[item.catalogID] = true;
+				return true;
+			}
+		});
+
+		var display = data.map(function(item) {
 
 			 var image = item.imageURI;
 			 var name =  item.caption;
 			 var description = item.the_Description;
-			 var linkUrl  	 = item.linkUrl;
+			 var linkUrl  	 = item.modelQuickViewDetails.linkUrl;
 
 			 $('.stackable').append(`
-				  <a class="ui card" href=${name}linkUrl>
+				  <a class="ui card" target="_blank" href=${linkUrl}>
 				 	 <div class="image">
-				 		 <img src=${image} alt="Grizzly Fitness Black Grizzly Paw Training Gloves - XXL">
+				 		 <img src=${image} alt=${name} class="cardImage">
 				 	 </div>
 				 	 <div class="content">
-				 		 <div class="header"><h2 class="titleHeader">${name}</h2></div>
-				 		 <div class="descriptionBox"><p class="description">${description}</p></div>
+				 		 <div class="header">${name}</div>
+				 		 <div class="description">${description}</div>
 				 	 </div>
 				  </a>
 				 `);
@@ -49,7 +56,7 @@ function handleSubmit() {
 
 		$('#loader').remove();
 
-		console.log('error!');
+		console.log(err);
 		$('.stackable').append('<h2>No instagram user was found</h2>');
 
 	});
