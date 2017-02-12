@@ -40,9 +40,9 @@ function prediction(images) {
 	var concepts = [];
 
 	function predict(url) {
-	  clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
+	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(response) {
-	      concepts.push(response);
+	      concepts = concepts.concat(response.rawData.outputs[0].data.concepts);
 	    },
 	    function(err) {
 	      console.log(err);
@@ -51,7 +51,7 @@ function prediction(images) {
 	}
 
 	Promise.all(images.map(img => predict(img.url))).then(values => {
-		console.log(concepts[0]);
+		console.log(concepts.length);
     console.log('done', concepts.length);
 	}).catch(err => console.log(err));
 
