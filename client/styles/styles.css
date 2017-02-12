@@ -78,7 +78,7 @@ li {
   margin: 20px;
 }
 
-#suggestions h2 {
+#suggestions h1 {
   font-size: 1.2em;
 }
 
@@ -109,7 +109,7 @@ li {
     padding: 0;
   }
 
-  #suggestions h2 {
+  #suggestions h1 {
     font-size: 1.1em;
   }
 }

@@ -14,6 +14,7 @@ var Shop = require('node-shop.com').initShop({
 
 app.use(bodyParser.urlencoded({extended: true}) )
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../client')));
 
 // call instgram to retrieve submitted user's images
 function instagramAPI(user) {
@@ -130,15 +131,18 @@ function promiseWrapper(blocksOfTen, client) {
 
 // routes
 app.get('/', function(req, res){
+  // home route
   res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
-app.get('/userGift', function(req, res){
-  instagramAPI('kingjames').then(function(images){
-    promiseWrapper(getTen(images), res);
-  });
+app.post('/api/gift', function(req, res){
+  console.log(req.body.user);
+  // instagramAPI('kingjames')
+  //   .then(function(images){
+  //      prediction(images.slice(0, 9));
+  //   })
+  res.sendFile(path.join(__dirname, '../client', 'suggestions.html'));
 });
-
 
 //============Trying Out Shop's API
 app.get('/shop', function(req, res){
