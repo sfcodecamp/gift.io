@@ -13,28 +13,34 @@
     <div class="heading">
       <h1 class="logo">Gift-ly</h1>
     </div>
+
     <div class="container">
       <div class="flex-container">
+        <div class="titleContainer">
+          <h1>
+            <p class="titleMain">Better gifts, better friendship.</p>
+            <span class="titleSub">Find gifts for your friends with our AI-powered recommendation engine:</span>
+          </h1>        
+        </div>
 
-      <div class="titleContainer">
-        <h1><span class="titleMain">Better gifts, better friendship.</span><br>
-        <span class="titleSub">Find gifts for your friends with our AI-powered recommendation engine:</span></h1>
-      </div>
+        <form onsubmit="return handleSubmit()">
+            <div class="form-input-container">
+              <input 
+                autofocus type="text" 
+                name="user" id="input" 
+                title="@" 
+                value="@" 
+                onfocus="this.value = this.value;"
+                autocapitalize="none" >
+            </div>
+            <button class="search-text" type="submit">Search</button>
+        </form>
 
-      <form onsubmit="return handleSubmit()">
-          <div class="form-input-container">
-            <label>@</label><input autofocus type="text" name="user" id="input">
-          </div>
-          <button class="search-text" type="submit">Search</button>
-      </form>
+        <h2 class="title">Enter an Instagram user to get gift suggestions</h2>
 
-      <h1 class="title">Enter an Instagram user to get gift suggestions</h1>
-
-      </div>
-      
-      <div class="suggestions">
-        <div class="ui link four stackable cards"></div>
-      </div>
+        <div class="suggestions">
+          <div class="ui link four stackable cards"></div>
+        </div>
 
       <div class='errorContainer'></div>
 
