@@ -18,7 +18,9 @@ function handleSubmit() {
     viewFactor: 0.2,
   }, 300);
 
-	axios.post('/api/gift', { user: document.getElementById('input').value }).then(response => {
+  var username = document.getElementById('input').value;
+  username = username.slice(1);  
+	axios.post('/api/gift', { user: username }).then(response => {
 
 		$('#loader').remove();
 
