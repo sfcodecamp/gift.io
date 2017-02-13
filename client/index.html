@@ -15,8 +15,11 @@
     </div>
     <div class="container">
       <div class="flex-container">
-      
-      <h1 class="title">Enter an Instagram user to get gift suggestions:</h1>
+
+      <div class="titleContainer">
+        <h1><span class="titleMain">Better gifts, better friendship.</span><br>
+        <span class="titleSub">Find gifts for your friends with our AI-powered recommendation engine:</span></h1>
+      </div>
 
       <form onsubmit="return handleSubmit()">
           <div class="form-input-container">
@@ -25,11 +28,16 @@
           <button class="search-text" type="submit">Search</button>
       </form>
 
+      <h1 class="title">Enter an Instagram user to get gift suggestions</h1>
+
+      </div>
+      
       <div class="suggestions">
         <div class="ui link four stackable cards"></div>
       </div>
 
-      </div>
+      <div class='errorContainer'></div>
+
     </div>    
 
   <script

@@ -67,20 +67,32 @@ h1 {
 .container {
   width: 80%;
   background: rgb(250,250,250,0.5);
-  margin: 0 auto;  
+  margin: 0 auto;
 }
 
 .flex-container {
-  height: 100vh;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 }
 
+.titleContainer {
+  margin-top: 25px;
+}
+
+.titleMain {
+  font-size: 1.9em;
+}
+
+.titleSub {
+  font-weight: normal;
+  font-size: 0.9em;
+  max-width: 250px;
+}
+
 .flex-container h1 {
-  font-size: 1.8em;
   height: 100px;
   line-height: 40px;
   margin: 15px;
@@ -179,12 +191,12 @@ li {
   margin: 10px auto;
 }
 
+.error {
+  width: 100%;
+  text-align: center;
+}
 
 @media screen and (max-width: 450px) {
-  .flex-container h1 {
-    font-size: 1.5em;
-    line-height: 30px;
-  }
 
   label, input[type="text"], button {
     font-size: 1.2em;
