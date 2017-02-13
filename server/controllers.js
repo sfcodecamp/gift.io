@@ -10,7 +10,7 @@ const Shop = require('node-shop.com').initShop({apikey: process.env.SHOP_KEY || 
 const clarifai = new Clarifai.App(
 	process.env.CLARIFAI_ID || Keys.clarifai_id,
 	process.env.CLARIFAI_SECRET || Keys.clarifai_secret
-)
+);
 
 const controllers = {
 	state: {
@@ -36,9 +36,9 @@ const controllers = {
 	callShopAPI: function(userKeywords, response) {
 		this.state.completed = 0;
 		this.state.concepts = [];
-	  Shop.search(userKeywords, {page: 1, count: 15})
+	  Shop.search(userKeywords, {page: 5, count: 50})
 	    .then(data => {
-	    	console.log("Sending shop results to client");
+	    	console.log(`Sending ${data.searchItems.length} shop results to client`);
 	      response.send(data.searchItems);
 	    })
 	    .catch(err => console.error("Error in callShopAPI():", err));
@@ -80,13 +80,16 @@ const controllers = {
         results.forEach(result => {
           if (result.value > threshold) this.state.concepts.push(result);
         });
-	    }, (err) => console.log("Error in clarifaiPredict():", err.data.status.details))
+	    });
 	},
 	prediction: function(images, limit, client) {	  
 		Promise.all(images.map(img => this.clarifaiPredict(img.url)))
 			.then(values => {
 				this.getResults(limit, client);
-	  }).catch(err => console.log("Error in prediction():", err));
+	  }).catch(err => {
+	  	console.log('There was an error (probably with the Clarifai API)!');
+	  	client.status(500).send('An error occurred');
+	  });
 	},
 	promiseWrapper: function(blocksOfTen, client) {
 	  blocksOfTen.forEach((block, index) => {
@@ -94,7 +97,7 @@ const controllers = {
 	      this.prediction(block, blocksOfTen.length, client);
 	    }, index * this.state.interval);
 	  });
-	},
+	}
 }
 
 module.exports = controllers;

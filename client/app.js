@@ -2,6 +2,7 @@
 function handleSubmit() {
 
 	$('#input').blur();
+	$('.error').remove();
 	$('.stackable').html('');
 
 	$('.flex-container').append(`
@@ -56,8 +57,15 @@ function handleSubmit() {
 
 		$('#loader').remove();
 
-		console.log(err);
-		$('.stackable').append('<h2>No instagram user was found</h2>');
+		var status = err.response.status;
+
+		if (status === 404) {
+			$('.errorContainer').append('<h2 class="error">No instagram user was found</h2>');
+		} else if (status === 500) {
+			$('.errorContainer').append('<h2 class="error">There was a problem on the server</h2>');
+		} else {
+			$('.errorContainer').append('<h2 class="error">Something went wrong...</h2>');
+		}
 
 	});
 
