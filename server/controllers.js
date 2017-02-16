@@ -39,7 +39,7 @@ const controllers = {
 	callShopAPI: function(userKeywords, response, active) {
 		// why are the results sometimes empty?
 		console.log(`Searching Shop for ${userKeywords}`);
-	  Shop.search(userKeywords, {page: 1, count: 50})
+	  Shop.search(userKeywords, {})
 	    .then(data => {
 	    	console.log(`Sending ${data.searchItems.length} shop results to client`);
 	    	active.state = false;
@@ -93,6 +93,8 @@ const controllers = {
 			.then(values => {
 				this.getResults(limit, client, state, active);
 	  }).catch(err => {
+	  	active.state = false;
+	  	console.log('an error occurred');
 	  	console.log(err.data.details);
 	  	client.status(500).send('An error occurred');
 	  });

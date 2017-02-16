@@ -19,7 +19,11 @@ function handleSubmit() {
   }, 300);
 
   var username = document.getElementById('input').value;
-  username = username.slice(1);  
+  
+  if (username.charAt(0) === '@') {
+  	username = username.slice(1);
+  }
+
 	axios.post('/api/gift', { user: username }).then(response => {
 
 		$('#loader').remove();
@@ -59,12 +63,17 @@ function handleSubmit() {
 
 		$('#loader').remove();
 
-		var status = err.response.status;
+		var { status } = err.response;
+
+		console.log(status);
 
 		if (status === 404) {
 			$('.errorContainer').append('<h2 class="error">No instagram user was found</h2>');
 		} else if (status === 500) {
 			$('.errorContainer').append('<h2 class="error">There was a problem on the server</h2>');
+		} else if (status === 503) {
+			$('.errorContainer').append(`<h2 class="error">I think someone else is using the app right now... We haven\'t scaled yet
+				so just try again in a few mintues!</h2>`);
 		} else {
 			$('.errorContainer').append('<h2 class="error">Something went wrong...</h2>');
 		}

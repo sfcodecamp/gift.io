@@ -19,6 +19,7 @@ var processRequest = function(user, response, active) {
     .then(images => {
       controllers.promiseWrapper(helpers.getTen(images), response, active);
     }).catch(err => {
+    	active.state = false;
       response.status(404).send('Instagram username was not found!');
     });
 };
@@ -38,17 +39,8 @@ app.post('/api/gift', (req, res) => {
 		active.state = true;
 		processRequest(user, res, active);
 	} else {
-		function tryAgain() {
-			if (!active.state) {
-				console.log('processing second request');
-				active.state = true;
-				processRequest(user, res, active);
-				clearInterval(repeat);
-			}
-		}
-		var repeat = setInterval(() => {
-			tryAgain();
-		}, 1000);
+		console.log('service not available');
+		res.status(503).send('Service unavailable');
 	}
 
 });
