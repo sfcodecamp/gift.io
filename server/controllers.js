@@ -13,14 +13,12 @@ const clarifai = new Clarifai.App(
 );
 
 var State = function() {
-	completed: 0,
-	concepts: []
-}
+	this.completed = 0,
+	this.concepts = []
+};
 
 const controllers = {
 	state: {
-		// completed: 0,
-		// concepts: [],
 		productMax: 3,
 		threshold: 0.9,
 		interval: 2000
@@ -38,23 +36,25 @@ const controllers = {
 		    .catch(err => reject("Error in instagramAPI():", err));
 	  });
 	},
-	callShopAPI: function(userKeywords, response) {
-		// this.state.completed = 0;
-		// this.state.concepts = [];
-	  Shop.search(userKeywords, {page: 5, count: 50})
+	callShopAPI: function(userKeywords, response, active) {
+		// why are the results sometimes empty?
+		console.log(`Searching Shop for ${userKeywords}`);
+	  Shop.search(userKeywords, {page: 1, count: 50})
 	    .then(data => {
 	    	console.log(`Sending ${data.searchItems.length} shop results to client`);
+	    	active.state = false;
 	      response.send(data.searchItems);
 	    })
 	    .catch(err => console.error("Error in callShopAPI():", err));
 	},
-	getResults: function(limit, client, state) {
+	getResults: function(limit, client, state, active) {
+		console.log('get results called');
 		state.completed++;
     if (state.completed === limit) {
     	let countedConcepts = helpers.countConcepts(state.concepts);
       let sortedFrequency = this.getNamesAndFreqs(countedConcepts);
       let keywords = this.getKeywords(sortedFrequency);
-      this.callShopAPI(keywords, client);
+      this.callShopAPI(keywords, client, active);
     }
   },
 	getKeywords: function(sortedNames) {
@@ -77,30 +77,32 @@ const controllers = {
     }
 		return toSort.sort((a,b) => b.frequency - a.frequency);
   },
-	clarifaiPredict: function(url) {
+	clarifaiPredict: function(url, state) {
 		let threshold = this.state.threshold;
 	  return clarifai.models.predict(Clarifai.GENERAL_MODEL, url)
 	  	.then(res => {
 	      let results = res.outputs[0].data.concepts;
         results.forEach(result => {
-          if (result.value > threshold) this.state.concepts.push(result);
+          if (result.value > threshold) state.concepts.push(result);
         });
 	    });
 	},
-	prediction: function(images, limit, client, state) {	  
-		Promise.all(images.map(img => this.clarifaiPredict(img.url)))
+	prediction: function(images, limit, client, state, active) {	  
+		console.log('prediction called');
+		Promise.all(images.map(img => this.clarifaiPredict(img.url, state)))
 			.then(values => {
-				this.getResults(limit, client, state);
+				this.getResults(limit, client, state, active);
 	  }).catch(err => {
-	  	console.log('There was an error (probably with the Clarifai API)!');
+	  	console.log(err.data.details);
 	  	client.status(500).send('An error occurred');
 	  });
 	},
-	promiseWrapper: function(blocksOfTen, client) {
+	promiseWrapper: function(blocksOfTen, client, active) {
+		console.log('promise wrapper called');
 		var reqState = new State();
 	  blocksOfTen.forEach((block, index) => {
 	    setTimeout(() => {
-	      this.prediction(block, blocksOfTen.length, client, reqState);
+	      this.prediction(block, blocksOfTen.length, client, reqState, active);
 	    }, index * this.state.interval);
 	  });
 	}
