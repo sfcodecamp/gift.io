@@ -19,21 +19,21 @@ var State = function() {
 
 const controllers = {
 	state: {
-		productMax: 3,
+		productMax: 2,
 		threshold: 0.9,
-		interval: 2000
+		interval: 2250
 	},
 	instagramAPI: function(user) {
 	  return new Promise((resolve, reject) => {
 	    return axios.get(`https://www.instagram.com/${user}/media/`)
 		    .then(res => {
+		    	if (!res.data.more_available) reject("User is private");
 		      let images = [];
 		      for (let post of res.data.items) {
 		        images.push({url: post.images.standard_resolution.url});
 		      }
 		      resolve(images);
-		    })
-		    .catch(err => reject("Error in instagramAPI():", err));
+		    }).catch(err => reject("Error in instagramAPI():", err));
 	  });
 	},
 	callShopAPI: function(userKeywords, response, active) {
@@ -94,8 +94,8 @@ const controllers = {
 				this.getResults(limit, client, state, active);
 	  }).catch(err => {
 	  	active.state = false;
-	  	console.log('an error occurred');
-	  	console.log(err.data.details);
+	  	console.log('an error occurred in the prediction function');
+	  	console.log(err.data.status.details);
 	  	client.status(500).send('An error occurred');
 	  });
 	},
